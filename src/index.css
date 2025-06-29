@@ -1,0 +1,349 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Add support for safe area insets */
+@layer utilities {
+  .mobile-card {
+    @apply p-3.5 sm:p-4 lg:p-6 rounded-xl sm:rounded-2xl shadow-md border border-gray-700 bg-gray-800/80 backdrop-blur-md mb-4;
+  }
+
+  .mobile-input {
+    @apply w-full pl-10 pr-4 py-3.5 rounded-xl border border-gray-600 bg-gray-700/80 text-gray-100 focus:ring-2 focus:ring-blue-500 focus:border-transparent mb-4;
+  }
+
+  .mobile-button {
+    @apply py-3.5 px-4 rounded-xl font-medium transition-all duration-200 flex items-center justify-center shadow-lg active:shadow-inner transform active:scale-95 text-sm;
+  }
+
+  .safe-area-inset {
+    padding-left: env(safe-area-inset-left);
+    padding-right: env(safe-area-inset-right);
+  }
+  
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .touch-manipulation { 
+    touch-action: manipulation; 
+  }
+  
+  /* Mobile-specific utilities */
+  .mobile-container {
+    max-width: 100vw;
+    overflow-x: hidden;
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+  
+  .mobile-padding {
+    padding-left: max(16px, env(safe-area-inset-left));
+    padding-right: max(16px, env(safe-area-inset-right));
+    padding-bottom: env(safe-area-inset-bottom, 16px);
+  }
+}
+
+/* Dark mode CSS variables */
+:root {
+  --color-background: #ffffff;
+  --color-foreground: #000000;
+}
+
+.dark {
+  --color-background: #111827;
+  --color-foreground: #ffffff;
+}
+
+body {
+  font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  font-feature-settings: 'cv11', 'ss01';
+  font-variation-settings: 'opsz' 32;
+  /* Improve text rendering on mobile */
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Improve touch scrolling */
+  -webkit-overflow-scrolling: touch;
+  /* Prevent horizontal scroll */
+  overflow-x: hidden;
+  /* Apply theme colors */
+  background-color: var(--color-background);
+  color: var(--color-foreground);
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+/* Ensure html and root don't allow horizontal overflow */
+html, #root {
+  max-width: 100vw;
+  overflow-x: hidden;
+}
+
+/* Improve button and input touch targets for mobile */
+@media (max-width: 640px) {
+  button, input, select, textarea {
+    min-height: 44px; /* Apple's recommended minimum touch target */
+  }
+  
+  /* Ensure proper spacing on mobile */
+  .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  /* Better mobile typography */
+  h1 { font-size: 1.75rem; line-height: 2rem; }
+  h2 { font-size: 1.5rem; line-height: 1.75rem; }
+  h3 { font-size: 1.25rem; line-height: 1.5rem; }
+}
+
+/* Custom scrollbar for light mode */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f5f9;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #cbd5e1;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #94a3b8;
+}
+
+/* Custom scrollbar for dark mode */
+.dark ::-webkit-scrollbar-track {
+  background: #374151;
+}
+
+.dark ::-webkit-scrollbar-thumb {
+  background: #6b7280;
+}
+
+.dark ::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Smooth transitions for all interactive elements */
+* {
+  transition-property: color, background-color, border-color, outline-color, text-decoration-color, fill, stroke, opacity, box-shadow, transform, filter, backdrop-filter;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 150ms;
+}
+
+/* Focus styles */
+input:focus, textarea:focus, select:focus, button:focus {
+  outline: none;
+}
+
+/* Custom animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* Improve mobile viewport handling */
+@supports (padding: env(safe-area-inset-top)) {
+  .safe-area-inset-top {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  .safe-area-inset-bottom {
+    padding-bottom: env(safe-area-inset-bottom);
+  }
+  
+  .safe-area-inset-left {
+    padding-left: env(safe-area-inset-left);
+  }
+  
+  .safe-area-inset-right {
+    padding-right: env(safe-area-inset-right);
+  }
+}
+
+/* Prevent zoom on iOS input focus */
+@media screen and (max-width: 767px) {
+  input[type="text"],
+  input[type="email"],
+  input[type="password"],
+  input[type="number"],
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}
+
+/* Improve button press feedback on mobile */
+button:active {
+  transform: scale(0.98);
+}
+
+/* Better card hover effects on mobile */
+@media (hover: none) and (pointer: coarse) {
+  .hover\:scale-105:hover {
+    transform: none;
+  }
+  
+  .hover\:shadow-lg:hover {
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  }
+}
+
+/* Dark mode card hover effects */
+.dark .hover\:shadow-lg:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.3), 0 4px 6px -2px rgba(0, 0, 0, 0.2);
+}
+
+/* Improve modal and overlay behavior on mobile */
+.fixed {
+  -webkit-transform: translateZ(0);
+  transform: translateZ(0);
+}
+
+/* Better mobile spacing and typography */
+@media (max-width: 640px) {
+  .text-xs { font-size: 0.75rem; line-height: 1.1rem; }
+  .text-sm { font-size: 0.875rem; line-height: 1.35rem; }
+  .text-base { font-size: 1rem; line-height: 1.6rem; }
+  .text-lg { font-size: 1.125rem; line-height: 1.8rem; }
+  .text-xl { font-size: 1.25rem; line-height: 1.9rem; }
+  .text-2xl { font-size: 1.5rem; line-height: 2.1rem; }
+  .text-3xl { font-size: 1.75rem; line-height: 2.3rem; }
+  
+  /* Improved spacing for mobile */
+  .mobile-spacing > * + * {
+    margin-top: 1rem;
+  }
+  
+  /* Better field spacing */
+  .field-group > * + * {
+    margin-top: 1.25rem;
+  }
+  
+  /* Improved tap targets */
+  .mobile-tap-target {
+    min-height: 44px;
+    min-width: 44px;
+  }
+}
+
+/* Dark mode specific improvements */
+.dark {
+  color-scheme: dark;
+}
+
+/* Better dark mode gradient backgrounds */
+.dark .bg-gradient-to-r.from-blue-50.to-emerald-50 {
+  background: linear-gradient(to right, rgba(59, 130, 246, 0.1), rgba(16, 185, 129, 0.1));
+}
+
+.dark .bg-gradient-to-r.from-emerald-50.to-blue-50 {
+  background: linear-gradient(to right, rgba(16, 185, 129, 0.1), rgba(59, 130, 246, 0.1));
+}
+
+.dark .bg-gradient-to-r.from-purple-50.to-pink-50 {
+  background: linear-gradient(to right, rgba(139, 92, 246, 0.1), rgba(236, 72, 153, 0.1));
+}
+
+/* Theme transition for root element */
+html {
+  transition: background-color 0.2s ease;
+}
+
+/* Selection colors for dark mode */
+.dark ::selection {
+  background-color: rgba(59, 130, 246, 0.3);
+  color: #ffffff;
+}
+
+/* Custom styles for mobile cards and inputs */
+.mobile-card-gradient {
+  background: linear-gradient(to bottom, rgba(31, 41, 55, 0.9), rgba(17, 24, 39, 0.95));
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.mobile-input-focus {
+  box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.5);
+  transition: all 0.2s ease;
+}
+
+/* Improved mobile animations */
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-fade-in-up {
+  animation: fadeInUp 0.3s ease-out;
+}
+  
+  /* Custom scrollbar styling */
+  .scrollbar-thin {
+    scrollbar-width: thin;
+  }
+  
+  .scrollbar-thumb-gray-300 {
+    scrollbar-color: #d1d5db transparent;
+  }
+  
+  .dark .scrollbar-thumb-gray-600 {
+    scrollbar-color: #4b5563 transparent;
+  }
+  
+  .scrollbar-track-transparent {
+    scrollbar-track-color: transparent;
+  }
+  
+  /* Webkit scrollbar styles */
+  .scrollbar-thin::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+  
+  .scrollbar-thin::-webkit-scrollbar-track {
+    background: transparent;
+  }
+  
+  .scrollbar-thumb-gray-300::-webkit-scrollbar-thumb {
+    background-color: #d1d5db;
+    border-radius: 9999px;
+  }
+  
+  .dark .scrollbar-thumb-gray-600::-webkit-scrollbar-thumb {
+    background-color: #4b5563;
+  }
+
+/* Improved scroll behavior */
+.smooth-scroll {
+  scroll-behavior: smooth;
+  -webkit-overflow-scrolling: touch;
+}
+
+::selection {
+  background-color: rgba(59, 130, 246, 0.2);
+  color: #000000;
+}
